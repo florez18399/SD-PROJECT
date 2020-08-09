@@ -38,6 +38,7 @@ module.exports = {
             // Insert some documents
             collection.find({}).toArray(function (err, docs) {
                 callback(err, docs);
+                client.close();
             });
         })        
     }
