@@ -41,5 +41,35 @@ module.exports = {
                 client.close();
             });
         })        
+    }, 
+    findGroupByCity : (callback) => {
+        console.log('Buscando documentos agrupados por ciudad');
+        connectDb((client) => {
+            const db = client.db(dbName);
+            const collection = db.collection('contagions');
+            collection.aggregate( 
+                [
+                  { 
+                      '$group': { 
+                        '_id': "$city", 
+                        'contagiados': { '$sum': 1 },
+                        'entry': {  
+                            '$push': {  
+                                'name': '$name', 
+                                'date': '$date_contagion' 
+                            }
+                        } 
+                    }		
+                  }
+                ], function(err, cursor) {
+                    cursor.toArray(function(err, documents) {
+                        console.log(documents)
+                        callback(err, documents);
+                      });
+                  }
+        )})    
     }
 }
+/**
+    db.contagions.aggregate([{ $group: { _id: '$city' , count: {$sum:1}, entry: {  $push: {  name: '$name',    date: '$date_contagion' } } } } ])
+*/
