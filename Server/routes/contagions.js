@@ -26,13 +26,12 @@ router.get('/', (req, res) => {
 })
 
 router.post('/add', upload,(req, res) => {
-    //console.log('Iniciando conexion base de datos...')
-    console.log(req.body)
     let contagion = req.body;
-    contagion.path_image
-    console.log(req.file);
+    contagion.server_location = req.headers.host; 
+    contagion.path_image = '/public/images/' + req.file.filename;
+    console.log(contagion);
     //res.send('Envio de imagenes');
-    insertInDb(COLLECTION_CONTAGIONS, (err, results) => {
+    insertInDb(COLLECTION_CONTAGIONS, contagion, (err, results) => {
         if(err) {
             res.status(500).json({message: 'Error al INSERTAR datos de contagio'})
         }else {
