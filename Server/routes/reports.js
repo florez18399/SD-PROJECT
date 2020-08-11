@@ -1,9 +1,11 @@
 var express = require('express')
 var router = express.Router();
 const dbConnection = require('../db/dbConnection')
+const clientRedis = require('../db/redisConnection')
 let ejs = require("ejs");
 let pdf = require("html-pdf");
 let path = require("path");
+const NAME_SETS = 'cities';
 
 router.get('/generatePDF', (req, res) => {
     dbConnection.findGroupByCity((err, results) => {
@@ -11,21 +13,55 @@ router.get('/generatePDF', (req, res) => {
             res.status(500).json({message: 'Error al obtener registros de base de datos'})
         } else {
             renderPDF(results, res);
+            saveResultsInRedis(results);
         }
     })
-   
 })
 
 router.get('/contagionsByCity', (req, res) => {
-    dbConnection.findGroupByCity((err, results) => {
+    clientRedis.smembers(NAME_SETS, (err, results) => {
         if(err) {
-            res.status(500).json({message: 'Error al obtener registros de base de datos'})
-        } else {
+            res.status(500).json({message: 'Fallo al obtener datos de redis'})
+        }else {
             console.log(results);
-            res.json(results)
+            getHashes(results, (hashes) => {
+                console.log(hashes);
+                res.status(200).json(hashes);
+            })
         }
     })
 })
+
+function getHashes(ids, cb) {
+    let hashes = [];
+    ids.forEach(id => {
+        clientRedis.hgetall(id, (err, results) => {
+            hashes.push(results);
+            if(ids.length == hashes.length) {
+                cb(hashes);
+            }
+        })
+    });
+}
+
+function saveResultsInRedis(results) {
+    console.log('Guardando resultados en redis');
+    let index = 0;
+    results.forEach(element => {
+        clientRedis.del(NAME_SETS);
+        let id= 'city:'+ index;
+        console.log(id)
+        clientRedis.hset(id, "name", element._id, "count", element.contagiados, (err, results)=> {
+            if(err) {   
+                console.log(err);
+            }else{
+                clientRedis.sadd('cities', id);
+            }
+        });
+        
+        index++; 
+    });
+}
 
 function renderPDF (resultsContagions, res) { 
     ejs.renderFile(path.join(__dirname, '../views/', "report.ejs"), {results:resultsContagions}, (err, data) => {
