@@ -5,7 +5,7 @@ const path = require('path')
 const insertInDb = require('../db/dbConnection').insertDocuments;
 const findOfDb = require('../db/dbConnection').findDocuments;
 const COLLECTION_CONTAGIONS = 'contagions';
-const fs = require('fs-extra')
+const fs = require('fs-extra');
 
 const cloudinary = require('cloudinary');
 //-----------------------Multer config ------------------------------
@@ -34,7 +34,6 @@ router.get('/', (req, res) => {
     })
 })
 
-
 router.post('/add', upload, (req, res) => {
     let contagion = req.body;
     let pathImage = req.file.path;
@@ -58,8 +57,4 @@ router.post('/add', upload, (req, res) => {
     });
     //res.send('Envio de imagenes');    
 })
-
-
-
-
 module.exports = router

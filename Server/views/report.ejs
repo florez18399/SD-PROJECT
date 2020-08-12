@@ -5,36 +5,53 @@
     <style>
         table {
             border-collapse: collapse;
+            width: 100%;
+            background-color: #bb1b0d;
+            color: white;
         }
 
         table,
         th,
-        td {
+        td, tfoot {
             border: 1px solid black;
+        }
+        .rowCont {
+            background-color: gray;
+            color: white;
         }
     </style>
 </head>
 
 <body>
-    <div style="width: 85%; margin: 0 7.5%;">
+    <div style="width: 90%; margin: 5%;">
         <div style="text-align: center; padding-left: 50px;">
             <h3>Reporte de contagiados por ciudad</h5>
-                <table>
-                    <% if (results.length > 0) { %>
-                    <% results.forEach(result => {%>
-                    <tr>
-                        <td><%= result._id %></td>
-                        <td><%= result.contagiados %></td>
+                <% if (results.length > 0) { %>
+                <% results.forEach(result => {%>
+                <table style="margin-top: 15px;">
+                    <thead>
+                        <td style="font-size: larger; text-transform: uppercase;"><%= result._id %></td>
+                    </thead>
+                    <table>
+                        <thead>
+                            <td>Nombre completo</td>
+                            <td>Fecha de diagnostico</td>
+                            <td>Comorbilidades</td>
+                        </thead>
                         <% if (result.entry.length > 0) { %>
                         <% result.entry.forEach(entry => {%>
+                        <tr class="rowCont">
                             <td><%= entry.name %></td>
-                             <td><%= entry.date %></td>
+                            <td><%= entry.date %></td>
+                            <td>enfermedad...</td>
+                        </tr>
                         <%  });%>
                         <% }%>
-                    </tr>
-                    <%  });%>
-                    <% }%>
+                    </table>
+                    <tfoot><td>Total de contagiados: <%= result.contagiados %></td></tfoot>
                 </table>
+                <%  });%>
+                <% }%>
         </div>
     </div>
 </body>
