@@ -1,0 +1,69 @@
+version: '3'
+services:
+  server1:
+    container_name: server1
+    restart: always
+    image: node/finalserver
+    env_file: 
+      - environment.env
+    ports: 
+      - "4000:3000"
+    links:
+      - mongo
+      - redis
+    networks:
+      red-project: 
+        ipv4_address: "172.20.0.10"
+  server2:
+    container_name: server2
+    restart: always
+    image: node/finalserver
+    env_file: 
+      - environment.env
+    ports: 
+      - "4001:3000"
+    links:
+      - mongo
+      - redis
+    networks:
+      red-project: 
+        ipv4_address: "172.20.0.11"
+  server3:
+    container_name: server3
+    restart: always
+    image: node/finalserver
+    env_file: 
+      - environment.env
+    ports: 
+      - "4002:3000"
+    links:
+      - mongo
+      - redis
+    networks:
+      red-project: 
+        ipv4_address: "172.20.0.12"
+        
+  mongo:
+    container_name: mongodb
+    image: mongo
+    networks:
+      red-project: 
+        ipv4_address: "172.20.0.3"
+  
+  redis: 
+    image: redis
+    container_name: cache
+    networks:
+      red-project: 
+        ipv4_address: "172.20.0.4"
+    expose: 
+      - 6379     
+    #volumes:
+      #- ./data:/data/db
+    
+networks:
+  default:
+    external:
+      name: red-project
+  red-project:
+    external: true

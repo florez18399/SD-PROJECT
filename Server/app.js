@@ -4,7 +4,7 @@ const path = require('path');
 const routeContagions = require('./routes/contagions')
 const routeReports = require('./routes/reports')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 //-----------------------------------------
 
 ///------------------------------------------
@@ -23,3 +23,7 @@ app.listen(port, () => {
 app.use(cors())
 app.use('/contagions', routeContagions)
 app.use('/reports', routeReports)
+
+/**
+ * docker network create --driver=bridge --subnet=172.20.0.0/16 red-project
+ */
