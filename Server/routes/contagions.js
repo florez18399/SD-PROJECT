@@ -5,6 +5,8 @@ const path = require('path')
 const insertInDb = require('../db/dbConnection').insertDocuments;
 const findOfDb = require('../db/dbConnection').findDocuments;
 const COLLECTION_CONTAGIONS = 'contagions';
+
+const cloudinary = require('cloudinary');
 //-----------------------Multer config ------------------------------
 var storage = multer.diskStorage({
   destination: path.join(__dirname + '/../', 'public/images'),
@@ -13,6 +15,12 @@ var storage = multer.diskStorage({
   }  
 })
 var upload = (multer({storage}).single('image'))
+//---------------------------------------------------------
+cloudinary.config({
+    cloud_name: 'dp13',
+    api_key: '374434275378869',
+    api_secret: 'SgXhhf7yjFQQoZxngjOFFGR8tN8'
+});
 //---------------------------------------------------------
 router.get('/', (req, res) => {
     console.log(req.body)
@@ -25,10 +33,17 @@ router.get('/', (req, res) => {
     })
 })
 
-router.post('/add', upload,(req, res) => {
+
+router.post('/add', upload, async(req, res) => {
     let contagion = req.body;
+    console.log(contagion);
     contagion.server_location = req.headers.host; 
     contagion.path_image = '/public/images/' + req.file.filename;
+
+    console.log(contagion.path_image);
+    const resultImage = await cloudinary.v2.uploader.upload(contagion.path_image);
+
+    console.log('resut:' + resultImage);
     console.log(contagion);
     //res.send('Envio de imagenes');
     insertInDb(COLLECTION_CONTAGIONS, contagion, (err, results) => {
@@ -39,6 +54,8 @@ router.post('/add', upload,(req, res) => {
         }
     })
 })
+
+
 
 
 module.exports = router
