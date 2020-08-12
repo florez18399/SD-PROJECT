@@ -36,14 +36,14 @@
                         <thead>
                             <td>Nombre completo</td>
                             <td>Fecha de diagnostico</td>
-                            <td>Comorbilidades</td>
+                            <td>Imagen de paciente</td>
                         </thead>
                         <% if (result.entry.length > 0) { %>
                         <% result.entry.forEach(entry => {%>
                         <tr class="rowCont">
                             <td><%= entry.name %></td>
                             <td><%= entry.date %></td>
-                            <td>enfermedad...</td>
+                            <td><a href="<%= entry.imageURL %>">Ver imagen</a></td>
                         </tr>
                         <%  });%>
                         <% }%>
@@ -55,5 +55,4 @@
         </div>
     </div>
 </body>
-
 </html>

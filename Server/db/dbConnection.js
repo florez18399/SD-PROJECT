@@ -60,7 +60,8 @@ module.exports = {
                         'entry': {  
                             '$push': {  
                                 'name': '$name', 
-                                'date': '$date_contagion' 
+                                'date': '$date_contagion',
+                                'imageURL': '$imageURL'
                             }
                         } 
                     }		
