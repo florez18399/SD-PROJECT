@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 85%; margin: 0 7.5%;">
+        <div style="text-align: center; padding-left: 50px;">
+            <h3>Reporte de contagiados por ciudad</h5>
+                <table>
+                    <% if (results.length > 0) { %>
+                    <% results.forEach(result => {%>
+                    <tr>
+                        <td><%= result._id %></td>
+                        <td><%= result.contagiados %></td>
+                        <% if (result.entry.length > 0) { %>
+                        <% result.entry.forEach(entry => {%>
+                            <td><%= entry.name %></td>
+                             <td><%= entry.date %></td>
+                        <%  });%>
+                        <% }%>
+                    </tr>
+                    <%  });%>
+                    <% }%>
+                </table>
+        </div>
+    </div>
+</body>
+
+</html>
