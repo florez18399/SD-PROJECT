@@ -12,7 +12,7 @@ router.get('/generatePDF', (req, res) => {
         if(err) {
             res.status(500).json({message: 'Error al obtener registros de base de datos'})
         } else {
-            renderPDF(results, res);
+            renderPDF(req.headers.host, results, res);
             saveResultsInRedis(results);
         }
     })
@@ -63,7 +63,7 @@ function saveResultsInRedis(results) {
     });
 }
 
-function renderPDF (resultsContagions, res) { 
+function renderPDF (host, resultsContagions, res) { 
     ejs.renderFile(path.join(__dirname, '../views/', "report.ejs"), {results:resultsContagions}, (err, data) => {
         if (err) {
             console.log('Error renderizando archivo');
@@ -79,12 +79,12 @@ function renderPDF (resultsContagions, res) {
                     "height": "20mm",
                 },
             };
-            pdf.create(data, options).toFile("report.pdf", function (err, data) {
+            pdf.create(data, options).toFile("./public/reports/report.pdf", function (err, data) {
                 if (err) {
                     console.log('Error creando pdf');
                     res.send(err);
                 } else {
-                    res.send("File created successfully");
+                    res.send(host + '/reports/report.pdf');
                 }
             });
         }

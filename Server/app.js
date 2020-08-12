@@ -7,11 +7,11 @@ const app = express()
 const port = 3000
 //-----------------------------------------
 
-///----------------------------------------
+///------------------------------------------
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use('/public/images',express.static(path.join(__dirname, 'public/images')));
-//----------------------------------------
+app.use('/reports',express.static(path.join(__dirname, 'public/reports')));
+//-------------------------------------------
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })

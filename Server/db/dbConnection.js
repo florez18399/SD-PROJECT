@@ -1,8 +1,10 @@
 const MongoClient = require('mongodb').MongoClient;
 //-----------------------------------------------
 //const url = 'mongodb://mongo:27017';
-const url = 'mongodb://localhost:27017';
-const dbName = 'project1';
+const url = 'mongodb://locahost:27017'
+//const url = process.env.MONGO_HOST;
+const dbName = 'project1'
+//const dbName = process.env.DB_MONGO_NAME;
 
 function connectDb(cb) {
     MongoClient.connect(url, function (err, client) {
