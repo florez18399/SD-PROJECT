@@ -10,7 +10,7 @@ var mongooseMorgan = require('mongoose-morgan');
 //--------------------LOGGING---------------------
 app.use(mongooseMorgan({
     collection: 'logs',
-    connectionString: 'mongodb://localhost:27017/project1',
+    connectionString: process.env.MONGO_HOST_FULL||'mongodb://localhost:27017/project1',
    }, {},
    'dev'
   ));
