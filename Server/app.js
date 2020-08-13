@@ -20,7 +20,7 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-app.use(cors())
+//app.use(cors())
 app.use('/contagions', routeContagions)
 app.use('/reports', routeReports)
 
