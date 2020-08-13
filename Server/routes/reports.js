@@ -84,7 +84,9 @@ function renderPDF (host, resultsContagions, res) {
                     console.log('Error creando pdf');
                     res.send(err);
                 } else {
-                    res.send(host + '/reports/report.pdf');
+                    setTimeout(function () {
+                        res.send(host + '/reports/report.pdf');
+                    }, 1000);
                 }
             });
         }
