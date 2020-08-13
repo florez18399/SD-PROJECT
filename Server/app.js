@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/reports',express.static(path.join(__dirname, 'public/reports')));
 //-------------------------------------------
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hola mundo desde ' + process.env.NAME_SERVER)
 })
 
 app.listen(port, () => {
@@ -26,4 +26,6 @@ app.use('/reports', routeReports)
 
 /**
  * docker network create --driver=bridge --subnet=172.20.0.0/16 red-project
+ * 
+ * docker run --name nginx-server -p 4010:80 --network=red-project --ip 172.20.0.2 -d  nginx
  */

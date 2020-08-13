@@ -6,6 +6,8 @@ services:
     image: node/finalserver
     env_file: 
       - environment.env
+    environment: 
+      - NAME_SERVER=Server1
     ports: 
       - "4000:3000"
     links:
@@ -20,6 +22,8 @@ services:
     image: node/finalserver
     env_file: 
       - environment.env
+    environment: 
+      - NAME_SERVER=Server2
     ports: 
       - "4001:3000"
     links:
@@ -34,6 +38,8 @@ services:
     image: node/finalserver
     env_file: 
       - environment.env
+    environment: 
+      - NAME_SERVER=Server3  
     ports: 
       - "4002:3000"
     links:
